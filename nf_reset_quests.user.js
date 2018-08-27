@@ -46,10 +46,16 @@
         });
     }
 
+    function confirmResetQuests() {
+        if (window.confirm("Do you really want to reset all quests?")) {
+            resetQuests();
+        }
+    }
+
     const infoDiv = document.querySelector('.qh-showhide .in');
     const resetBtn = document.createElement('a');
     resetBtn.classList.add('subbtn');
     resetBtn.appendChild(document.createTextNode('Reset all quests'));
-    resetBtn.onclick = resetQuests;
+    resetBtn.onclick = confirmResetQuests;
     infoDiv.appendChild(resetBtn);
 })();
