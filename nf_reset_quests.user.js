@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Nerd Fitness Reset quests
 // @namespace    https://github.com/tobbe
-// @version      0.1
+// @version      0.2
 // @description  Adds a button to reset (mark as uncomplete) all quests
 // @license      MIT
 // @author       Tobbe
