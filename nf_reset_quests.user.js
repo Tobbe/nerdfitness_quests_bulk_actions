@@ -105,22 +105,22 @@
         if (actionElement) {
           actionElement.onclick = () => {
             action();
-            modalDiv.style.display = "none";
+            modalDiv.style.display = 'none';
           };
         }
 
         // Get the <span> element that closes the modal
-        const span = document.getElementById(id + "-close");
+        const span = document.getElementById(id + '-close');
 
         // When the user clicks on <span> (x), close the modal
         span.onclick = () => {
-            modalDiv.style.display = "none";
+            modalDiv.style.display = 'none';
         }
 
         // When the user clicks anywhere outside of the modal, close it
         modalDiv.onclick = event => {
             if (event.target === modalDiv) {
-                modalDiv.style.display = "none";
+                modalDiv.style.display = 'none';
             }
         }
 
@@ -161,29 +161,29 @@
                 }
 
                 const fetchConfig = {
-                    body: new URLSearchParams("action=nfq_update_user_meta&security=&req=complete_quest&pid=" + id),
-                    method: "POST",
+                    body: new URLSearchParams('action=nfq_update_user_meta&security=&req=complete_quest&pid=' + id),
+                    method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
                     },
-                    credentials: "same-origin",
+                    credentials: 'same-origin',
                 };
 
                 const fetchConfigStarred = {
-                    body: new URLSearchParams("action=nfq_update_user_meta&security=&req=favorite_quest&pid=" + id),
-                    method: "POST",
+                    body: new URLSearchParams('action=nfq_update_user_meta&security=&req=favorite_quest&pid=' + id),
+                    method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
                     },
-                    credentials: "same-origin",
+                    credentials: 'same-origin',
                 };
 
                 if (toggleCompleted) {
-                    promises.push(fetch("https://www.nerdfitness.com/wp-admin/admin-ajax.php", fetchConfig));
+                    promises.push(fetch('https://www.nerdfitness.com/wp-admin/admin-ajax.php', fetchConfig));
                 }
 
                 if (toggleStarred) {
-                    promises.push(fetch("https://www.nerdfitness.com/wp-admin/admin-ajax.php", fetchConfigStarred));
+                    promises.push(fetch('https://www.nerdfitness.com/wp-admin/admin-ajax.php', fetchConfigStarred));
                 }
             });
 
@@ -194,14 +194,14 @@
     }
 
     function confirmResetQuests() {
-        if (window.confirm("Do you really want to reset?")) {
+        if (window.confirm('Do you really want to reset?'')) {
             const completedValue =
                 resetModal.querySelector('input[name="completed"]:checked').id;
             const starredValue =
                 resetModal.querySelector('input[name="starred"]:checked').id;
 
             resetQuests(completedValue, starredValue);
-            progressModal.style.display = "block";
+            progressModal.style.display = 'block';
         }
     }
 
@@ -231,7 +231,7 @@
     const resetBtn = htmlToElement('<a class="subbtn">Reset all quests</a>');
 
     resetBtn.onclick = () => {
-        resetModal.style.display = "block";
+        resetModal.style.display = 'block';
     };
 
     const buttonContainer = document.querySelector('.fx-inner-cont');
