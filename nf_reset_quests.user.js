@@ -127,8 +127,9 @@
         return modalDiv;
     }
 
-    function resetQuests(completedValue) {
+    function resetQuests(completedValue, starredValue) {
         const url = 'https://www.nerdfitness.com/wp-admin/admin-ajax.php?action=alm_query_posts&query_type=standard&nonce=6bc113fe44&repeater=template_2&theme_repeater=null&cta=&comments=&post_type%5B%5D=nfq_quest&post_format=&category=&category__not_in=&tag=&tag__not_in=&taxonomy=nfq_quest_category&taxonomy_terms=adventurer%2Cassassin%2Cdruid%2Cmonk%2Cranger%2Crebel%2Cscout%2Cwarrior%2Cacademy%2Cfitness%2Cmindset%2Cnutrition%2Cyoga&taxonomy_operator=&taxonomy_relation=&meta_key=&meta_value=&meta_compare=&meta_relation=&meta_type=&author=&year=&month=&day=&post_status=&order=DESC&orderby=date&post__in=&post__not_in=&exclude=&search=&custom_args=&posts_per_page=10000&page=0&offset=0&preloaded=false&seo_start_page=1&paging=false&previous_post=false&previous_post_id=&previous_post_taxonomy=&lang=&slug=my-quests&canonical_url=https%3A%2F%2Fwww.nerdfitness.com%2Flevel-up%2Fmy-quests%2F';
+
         fetch(url).then(data => data.json()).then(res => {
             const quests = res.html.split('<?php');
             const promises = [];
@@ -136,15 +137,26 @@
                 const idIndex = quest.indexOf('data-id="') + 'data-id="'.length;
                 const idEndIndex = quest.indexOf('"', idIndex + 1);
                 const id = quest.slice(idIndex, idEndIndex);
+                const completed = quest.indexOf('q-complete') > -1;
                 const starred = quest.indexOf('class="qh-star active"') > -1;
 
                 let toggleCompleted = false;
 
-                if (quest.indexOf('q-complete') > -1) {
+                if (completed) {
                     if (completedValue === 'all-quests' ||
                         completedValue === 'starred-quests' && starred ||
                         completedValue === 'un-starred-quests' && !starred) {
                         toggleCompleted = true;
+                    }
+                }
+
+                let toggleStarred = false;
+
+                if (starred) {
+                    if (starredValue === 'starred-all-quests' ||
+                        starredValue === 'starred-completed-quests' && completed ||
+                        starredValue === 'starred-uncompleted-quests' && !completed) {
+                        toggleStarred = true;
                     }
                 }
 
@@ -157,8 +169,21 @@
                     credentials: "same-origin",
                 };
 
+                const fetchConfigStarred = {
+                    body: new URLSearchParams("action=nfq_update_user_meta&security=&req=favorite_quest&pid=" + id),
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    credentials: "same-origin",
+                };
+
                 if (toggleCompleted) {
                     promises.push(fetch("https://www.nerdfitness.com/wp-admin/admin-ajax.php", fetchConfig));
+                }
+
+                if (toggleStarred) {
+                    promises.push(fetch("https://www.nerdfitness.com/wp-admin/admin-ajax.php", fetchConfigStarred));
                 }
             });
 
@@ -172,8 +197,10 @@
         if (window.confirm("Do you really want to reset?")) {
             const completedValue =
                 resetModal.querySelector('input[name="completed"]:checked').id;
+            const starredValue =
+                resetModal.querySelector('input[name="starred"]:checked').id;
 
-            resetQuests(completedValue);
+            resetQuests(completedValue, starredValue);
             progressModal.style.display = "block";
         }
     }
@@ -186,6 +213,13 @@
             <label for="all-quests"><input type="radio" id="all-quests" name="completed"> Mark all quests as not completed</label>
             <label for="starred-quests"><input type="radio" id="starred-quests" name="completed"> Mark starred quests as not completed</label>
             <label for="un-starred-quests"><input type="radio" id="un-starred-quests" name="completed"> Mark un-starred quests as not completed</label>
+
+            <legend>Starred status</legend>
+
+            <label for="starred-no-quests"><input type="radio" id="starred-no-quests" name="starred" checked> Don't change starred status</label>
+            <label for="starred-all-quests"><input type="radio" id="starred-all-quests" name="starred"> Unstar all quests</label>
+            <label for="starred-completed-quests"><input type="radio" id="starred-completed-quests" name="starred"> Unstar all completed quests</label>
+            <label for="starred-uncompleted-quests"><input type="radio" id="starred-uncompleted-quests" name="starred"> Unstar all not completed quests</label>
         </fieldset>
 
         <button id="reset-modal-action">Reset</button>
