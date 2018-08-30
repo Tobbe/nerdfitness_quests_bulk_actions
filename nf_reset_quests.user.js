@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Nerd Fitness Reset quests
+// @name         Nerd Fitness Quest bulk actions
 // @namespace    https://github.com/tobbe
 // @version      0.3
-// @description  Adds a button to reset (mark as uncomplete) all quests
+// @description  Adds a button to perform quest bulk actions
 // @license      MIT
 // @author       Tobbe
 // @match        https://www.nerdfitness.com/level-up/my-quests/
@@ -127,7 +127,7 @@
         return modalDiv;
     }
 
-    function resetQuests(completedValue, starredValue) {
+    function performBulkActions(completedValue, starredValue) {
         const url = 'https://www.nerdfitness.com/wp-admin/admin-ajax.php?action=alm_query_posts&query_type=standard&nonce=6bc113fe44&repeater=template_2&theme_repeater=null&cta=&comments=&post_type%5B%5D=nfq_quest&post_format=&category=&category__not_in=&tag=&tag__not_in=&taxonomy=nfq_quest_category&taxonomy_terms=adventurer%2Cassassin%2Cdruid%2Cmonk%2Cranger%2Crebel%2Cscout%2Cwarrior%2Cacademy%2Cfitness%2Cmindset%2Cnutrition%2Cyoga&taxonomy_operator=&taxonomy_relation=&meta_key=&meta_value=&meta_compare=&meta_relation=&meta_type=&author=&year=&month=&day=&post_status=&order=DESC&orderby=date&post__in=&post__not_in=&exclude=&search=&custom_args=&posts_per_page=10000&page=0&offset=0&preloaded=false&seo_start_page=1&paging=false&previous_post=false&previous_post_id=&previous_post_taxonomy=&lang=&slug=my-quests&canonical_url=https%3A%2F%2Fwww.nerdfitness.com%2Flevel-up%2Fmy-quests%2F';
 
         fetch(url).then(data => data.json()).then(res => {
@@ -193,14 +193,14 @@
         });
     }
 
-    function confirmResetQuests() {
-        if (window.confirm('Do you really want to reset?'')) {
+    function confirmBulkActions() {
+        if (window.confirm('Do you really want to perform these bulk actions?'')) {
             const completedValue =
-                resetModal.querySelector('input[name="completed"]:checked').id;
+                bulkActionsModal.querySelector('input[name="completed"]:checked').id;
             const starredValue =
-                resetModal.querySelector('input[name="starred"]:checked').id;
+                bulkActionsModal.querySelector('input[name="starred"]:checked').id;
 
-            resetQuests(completedValue, starredValue);
+            performBulkActions(completedValue, starredValue);
             progressModal.style.display = 'block';
         }
     }
@@ -224,20 +224,20 @@
             <label for="starred-uncompleted-quests"><input type="radio" id="starred-uncompleted-quests" name="starred"> Unstar all not completed quests</label>
         </fieldset>
 
-        <button id="reset-modal-action">Reset</button>
+        <button id="bulk-actions-modal-action">Continue</button>
     `;
 
-    const resetModal = createModal('reset-modal', modalContent, confirmResetQuests);
-    const progressModal = createModal('progress-modal', 'Reset in progress, please wait...');
+    const bulkActionsModal = createModal('bulk-actions-modal', modalContent, confirmBulkActions);
+    const progressModal = createModal('progress-modal', 'Bulk actions in progress, please wait...');
 
-    const resetBtn = htmlToElement('<a class="subbtn">Reset all quests</a>');
+    const bulkActionsBtn = htmlToElement('<a class="subbtn">Quest bulk actions</a>');
 
-    resetBtn.onclick = () => {
-        resetModal.style.display = 'block';
+    bulkActionsBtn.onclick = () => {
+        bulkActionsModal.style.display = 'block';
     };
 
     const buttonContainer = document.querySelector('.fx-inner-cont');
-    buttonContainer.insertBefore(resetBtn, buttonContainer.firstChild);
+    buttonContainer.insertBefore(bulkActionsBtn, buttonContainer.firstChild);
 
     document.querySelectorAll('.quests-bread')[1].style = '';
 })();
