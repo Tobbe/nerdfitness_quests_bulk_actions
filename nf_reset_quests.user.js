@@ -193,16 +193,14 @@
         });
     }
 
-    function confirmBulkActions() {
-        if (window.confirm('Do you really want to perform these bulk actions?'')) {
-            const completedValue =
-                bulkActionsModal.querySelector('input[name="completed"]:checked').id;
-            const starredValue =
-                bulkActionsModal.querySelector('input[name="starred"]:checked').id;
+    function triggerBulkActions() {
+        const completedValue =
+            bulkActionsModal.querySelector('input[name="completed"]:checked').id;
+        const starredValue =
+            bulkActionsModal.querySelector('input[name="starred"]:checked').id;
 
-            performBulkActions(completedValue, starredValue);
-            progressModal.style.display = 'block';
-        }
+        performBulkActions(completedValue, starredValue);
+        progressModal.style.display = 'block';
     }
 
     const modalContent = `
@@ -227,7 +225,7 @@
         <button id="bulk-actions-modal-action">Continue</button>
     `;
 
-    const bulkActionsModal = createModal('bulk-actions-modal', modalContent, confirmBulkActions);
+    const bulkActionsModal = createModal('bulk-actions-modal', modalContent, triggerBulkActions);
     const progressModal = createModal('progress-modal', 'Bulk actions in progress, please wait...');
 
     const bulkActionsBtn = htmlToElement('<a class="subbtn">Quest bulk actions</a>');
