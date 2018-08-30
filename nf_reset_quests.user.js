@@ -13,6 +13,12 @@
     'use strict';
 
     GM_addStyle(`
+        .quests-bread {
+            position: relative;
+            float: right;
+            top: 0;
+        }
+
         /* The Modal (background) */
         .modal {
             display: none;
@@ -172,8 +178,6 @@
         }
     }
 
-    const infoDiv = document.querySelector('.qh-showhide .in');
-
     const modalContent = `
         <fieldset>
             <legend>Completed status</legend>
@@ -196,5 +200,8 @@
         resetModal.style.display = "block";
     };
 
-    infoDiv.appendChild(resetBtn);
+    const buttonContainer = document.querySelector('.fx-inner-cont');
+    buttonContainer.insertBefore(resetBtn, buttonContainer.firstChild);
+
+    document.querySelectorAll('.quests-bread')[1].style = '';
 })();
