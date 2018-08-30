@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Nerd Fitness Quest bulk actions
+// @name         Nerd Fitness Quests bulk actions
 // @namespace    https://github.com/tobbe
 // @version      0.3
 // @description  Adds a button to perform quest bulk actions
@@ -228,7 +228,7 @@
     const bulkActionsModal = createModal('bulk-actions-modal', modalContent, triggerBulkActions);
     const progressModal = createModal('progress-modal', 'Bulk actions in progress, please wait...');
 
-    const bulkActionsBtn = htmlToElement('<a class="subbtn">Quest bulk actions</a>');
+    const bulkActionsBtn = htmlToElement('<a class="subbtn">Quests bulk actions</a>');
 
     bulkActionsBtn.onclick = () => {
         bulkActionsModal.style.display = 'block';
