@@ -213,7 +213,9 @@
             <label for="all-quests"><input type="radio" id="all-quests" name="completed"> Mark all quests as not completed</label>
             <label for="starred-quests"><input type="radio" id="starred-quests" name="completed"> Mark starred quests as not completed</label>
             <label for="un-starred-quests"><input type="radio" id="un-starred-quests" name="completed"> Mark un-starred quests as not completed</label>
+        </fieldset>
 
+        <fieldset>
             <legend>Starred status</legend>
 
             <label for="starred-no-quests"><input type="radio" id="starred-no-quests" name="starred" checked> Don't change starred status</label>
