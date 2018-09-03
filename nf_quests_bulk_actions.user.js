@@ -6,13 +6,25 @@
 // @license      MIT
 // @author       Tobbe
 // @match        https://www.nerdfitness.com/level-up/my-quests/
-// @grant        GM_addStyle
 // ==/UserScript==
 
 (function() {
     'use strict';
 
-    GM_addStyle(`
+    function addStyle(css) {
+        const style = document.createElement('style');
+        style.type = 'text/css';
+        style.textContent = css;
+        document.head.appendChild(style);
+    }
+
+    function htmlToElement(html) {
+        const template = document.createElement('template');
+        template.innerHTML = html.trim();
+        return template.content.firstChild;
+    }
+
+    addStyle(`
         .quests-bread {
             position: relative;
             float: right;
@@ -81,11 +93,6 @@
         }
     `);
 
-    function htmlToElement(html) {
-        const template = document.createElement('template');
-        template.innerHTML = html.trim();
-        return template.content.firstChild;
-    }
 
     function createModal(id, content, action) {
         const modalHtml = `
