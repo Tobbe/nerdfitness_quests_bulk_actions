@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Nerd Fitness Quests bulk actions
 // @namespace    https://github.com/tobbe
-// @version      0.4
+// @version      0.5
 // @description  Adds a button to perform quest bulk actions
 // @license      MIT
 // @author       Tobbe
