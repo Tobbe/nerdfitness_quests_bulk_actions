@@ -136,6 +136,22 @@
 
     function performBulkActions(completedValue, starredValue) {
         const url = 'https://www.nerdfitness.com/wp-admin/admin-ajax.php?action=alm_query_posts&query_type=standard&nonce=6bc113fe44&repeater=template_2&theme_repeater=null&cta=&comments=&post_type%5B%5D=nfq_quest&post_format=&category=&category__not_in=&tag=&tag__not_in=&taxonomy=nfq_quest_category&taxonomy_terms=adventurer%2Cassassin%2Cdruid%2Cmonk%2Cranger%2Crebel%2Cscout%2Cwarrior%2Cacademy%2Cfitness%2Cmindset%2Cnutrition%2Cyoga&taxonomy_operator=&taxonomy_relation=&meta_key=&meta_value=&meta_compare=&meta_relation=&meta_type=&author=&year=&month=&day=&post_status=&order=DESC&orderby=date&post__in=&post__not_in=&exclude=&search=&custom_args=&posts_per_page=10000&page=0&offset=0&preloaded=false&seo_start_page=1&paging=false&previous_post=false&previous_post_id=&previous_post_taxonomy=&lang=&slug=my-quests&canonical_url=https%3A%2F%2Fwww.nerdfitness.com%2Flevel-up%2Fmy-quests%2F';
+        const adminUrl = 'https://www.nerdfitness.com/wp-admin/admin-ajax.php';
+
+        function generateConfig(action, id) {
+            return {
+                body: new URLSearchParams(`action=nfq_update_user_meta&security=&req=${action}&pid=${id}`),
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                credentials: 'same-origin',
+            };
+        }
+
+        function asyncAction(action, id) {
+            return fetch(adminUrl, generateConfig('complete_quest', id));
+        }
 
         fetch(url).then(data => data.json()).then(res => {
             const quests = res.html.split('<?php');
@@ -167,30 +183,12 @@
                     }
                 }
 
-                const fetchConfig = {
-                    body: new URLSearchParams('action=nfq_update_user_meta&security=&req=complete_quest&pid=' + id),
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    credentials: 'same-origin',
-                };
-
-                const fetchConfigStarred = {
-                    body: new URLSearchParams('action=nfq_update_user_meta&security=&req=favorite_quest&pid=' + id),
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    credentials: 'same-origin',
-                };
-
                 if (toggleCompleted) {
-                    promises.push(fetch('https://www.nerdfitness.com/wp-admin/admin-ajax.php', fetchConfig));
+                    promises.push(asyncAction('complete_quest', id)));
                 }
 
                 if (toggleStarred) {
-                    promises.push(fetch('https://www.nerdfitness.com/wp-admin/admin-ajax.php', fetchConfigStarred));
+                    promises.push(asyncAction('favorite_quest', id)));
                 }
             });
 
