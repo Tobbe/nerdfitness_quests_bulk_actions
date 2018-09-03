@@ -150,7 +150,7 @@
         }
 
         function asyncAction(action, id) {
-            return fetch(adminUrl, generateConfig('complete_quest', id));
+            return fetch(adminUrl, generateConfig(action, id));
         }
 
         fetch(url).then(data => data.json()).then(res => {
@@ -184,11 +184,11 @@
                 }
 
                 if (toggleCompleted) {
-                    promises.push(asyncAction('complete_quest', id)));
+                    promises.push(asyncAction('complete_quest', id));
                 }
 
                 if (toggleStarred) {
-                    promises.push(asyncAction('favorite_quest', id)));
+                    promises.push(asyncAction('favorite_quest', id));
                 }
             });
 
